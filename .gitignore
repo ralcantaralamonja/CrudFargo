@@ -1,6 +1,6 @@
 #ingnorar
 # Archivos temporales creados por Visual Studio
-Fargoapi/.vs/
+.vs/
 bin/
 obj/
 

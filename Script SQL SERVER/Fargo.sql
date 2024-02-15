@@ -71,6 +71,7 @@ Select
 C.idContenedor, 
 C.numContenedor,
 T.nombre as Tipo,
+C.idTipo,
 C.tamContenedor,
 C.pesoContenedor,
 C.taraContenedor
@@ -86,6 +87,7 @@ AS
 Select 
 C.idContenedor, 
 C.numContenedor,
+C.idTipo,
 T.nombre as Tipo,
 C.tamContenedor,
 C.pesoContenedor,
