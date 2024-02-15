@@ -53,13 +53,79 @@ namespace Fargoapi.Datos
 
                 return lista;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                
-                throw new Exception("Error al listar contenedores", ex);
+                throw new Exception("Error al ejecutar la consulta SQL", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                 
+                throw new Exception("Error de operación no válida", ex);
+            }
+            catch (Exception ex)
+            {
+             
+                throw new Exception("Error desconocido al listar contenedores", ex);
             }
         }
 
+        public async Task<Mcontenedor> ObtenerContenedorPorId(int id)
+        {
+            try
+            {
+                using (var sql = new SqlConnection(cn.cadena()))
+                {
+                    await sql.OpenAsync();
+
+                    using (var cmd = new SqlCommand("usp_ListarContenedor", sql))  
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id", id); // Suponiendo que el nombre del parámetro en el procedimiento almacenado es @id
+
+                        using (var reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                var contenedor = new Mcontenedor();
+                                contenedor.idContenedor = reader.GetInt32(reader.GetOrdinal("idContenedor"));
+                                contenedor.numContenedor = reader.GetInt32(reader.GetOrdinal("numContenedor"));
+                                contenedor.TipContenedor = reader.GetString(reader.GetOrdinal("Tipo"));
+                                contenedor.tamContenedor = reader.GetInt32(reader.GetOrdinal("tamContenedor"));
+
+                                if (!reader.IsDBNull(reader.GetOrdinal("pesoContenedor")))
+                                {
+                                    contenedor.pesoContenedor = reader.GetDouble(reader.GetOrdinal("pesoContenedor"));
+                                }
+
+                                if (!reader.IsDBNull(reader.GetOrdinal("taraContenedor")))
+                                {
+                                    contenedor.taraContenedor = reader.GetDouble(reader.GetOrdinal("taraContenedor"));
+                                }
+
+                                return contenedor;
+                            }
+                            else
+                            {
+                                return null; // El contenedor no se encontró
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al ejecutar la consulta SQL", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new Exception("Error de operación no válida", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error desconocido al obtener el contenedor", ex);
+            }
+        }
 
 
 
