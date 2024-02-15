@@ -86,6 +86,37 @@ namespace Fargoapi.Controllers
             }
         }
 
+        [HttpDelete("contenedores/{id}")]
+        public async Task<ActionResult> EliminarContenedor(int id)
+        {
+            try
+            {
+                var funcion = new Dcontainers();
+
+                // Verificar si el contenedor con el ID proporcionado existe
+                var contenedorExistente = await funcion.ListarContenedor(id);
+                if (contenedorExistente == null)
+                {
+                    return NotFound("El contenedor no existe");
+                }
+
+                // Llamar al método para eliminar el contenedor
+                var exito = await funcion.EliminarContenedor(id);
+
+                if (exito)
+                {
+                    return Ok("Contenedor eliminado exitosamente");
+                }
+                else
+                {
+                    return StatusCode(500, "Error al eliminar el contenedor");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al eliminar el contenedor: {ex.Message}");
+            }
+        }
 
 
     }

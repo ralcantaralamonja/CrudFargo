@@ -204,6 +204,39 @@ namespace Fargoapi.Datos
             }
         }
 
+        public async Task<bool> EliminarContenedor(int id)
+        {
+            try
+            {
+                using (var sql = new SqlConnection(cn.cadena()))
+                {
+                    await sql.OpenAsync();
+
+                    using (var cmd = new SqlCommand("usp_BorrarContenedor", sql))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@id", id);
+
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+
+                        // Si se eliminó al menos una fila, retorna true
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al ejecutar la consulta SQL", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new Exception("Error de operación no válida", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error desconocido al eliminar el contenedor", ex);
+            }
+        }
 
 
     }
