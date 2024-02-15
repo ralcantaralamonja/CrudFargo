@@ -167,6 +167,43 @@ namespace Fargoapi.Datos
         }
 
 
+        public async Task<bool> ActualizarContenedor(Mcontenedor contenedorActualizado)
+        {
+            try
+            {
+                using (var sql = new SqlConnection(cn.cadena()))
+                {
+                    await sql.OpenAsync();
+
+                    using (var cmd = new SqlCommand("usp_ActualizarContenedor", sql))
+                    { 
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@Id", contenedorActualizado.idContenedor);
+                        cmd.Parameters.AddWithValue("@numCont", contenedorActualizado.numContenedor);
+                        cmd.Parameters.AddWithValue("@IdTipo", contenedorActualizado.idTipo);
+                        cmd.Parameters.AddWithValue("@tamCont", contenedorActualizado.tamContenedor);
+                        cmd.Parameters.AddWithValue("@pesCont", contenedorActualizado.pesoContenedor);
+                        cmd.Parameters.AddWithValue("@taraCont", contenedorActualizado.taraContenedor);
+
+                        await cmd.ExecuteNonQueryAsync();
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al ejecutar la consulta SQL", ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new Exception("Error de operación no válida", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error desconocido al actualizar el contenedor", ex);
+            }
+        }
+
 
 
     }

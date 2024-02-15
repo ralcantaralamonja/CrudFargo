@@ -30,7 +30,7 @@ namespace Fargoapi.Controllers
             return contenedor;
         }
 
- [HttpPost("contenedores")]
+        [HttpPost("contenedores")]
         public async Task<ActionResult> InsertarContenedor(Mcontenedor nuevoContenedor)
         {
             try
@@ -52,6 +52,41 @@ namespace Fargoapi.Controllers
                 return BadRequest($"Error al insertar el contenedor: {ex.Message}");
             }
         }
+
+        [HttpPut("contenedores/{id}")]
+        public async Task<ActionResult> ActualizarContenedor(int id, Mcontenedor contenedorActualizado)
+        {
+            try
+            {
+                var funcion = new Dcontainers();
+
+                // Verificar si el contenedor con el ID proporcionado existe
+                var contenedorExistente = await funcion.ListarContenedor(id);
+                if (contenedorExistente == null)
+                {
+                    return NotFound("El contenedor no existe");
+                }
+
+                contenedorActualizado.idContenedor = id;
+
+                var exito = await funcion.ActualizarContenedor(contenedorActualizado);
+
+                if (exito)
+                {
+                    return Ok("Contenedor actualizado exitosamente");
+                }
+                else
+                {
+                    return StatusCode(500, "Error al actualizar el contenedor");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al actualizar el contenedor: {ex.Message}");
+            }
+        }
+
+
 
     }
 }
