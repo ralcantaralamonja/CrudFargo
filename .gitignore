@@ -1,0 +1,46 @@
+#ingnorar
+# Archivos temporales creados por Visual Studio
+Fargoapi/.vs/
+bin/
+obj/
+
+# Directorio de paquetes NuGet
+packages/
+
+# Archivo de configuración local de usuario de Visual Studio
+*.suo
+*.user
+
+# Carpeta de caché de Visual Studio Code
+.vscode/
+
+# Carpeta de caché de ReSharper
+_ReSharper*/
+
+# Archivos de caché y registros de compilación
+*.log
+*.swp
+*.swo
+*.cache
+
+# Archivos de respaldo creados por editores de texto
+*~
+
+# Archivos de compilación
+*.dll
+*.exe
+*.pdb
+*.dll.config
+
+# Archivos de salida del compilador
+*.opendb
+
+# Archivos de resultados de pruebas
+*.TestResults/
+
+# Carpeta de caché de documentación
+Documentation.cache/
+
+# Carpetas y archivos específicos de la base de datos (opcional, depende del proyecto)
+*.mdf
+*.ldf
